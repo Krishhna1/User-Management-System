@@ -1,0 +1,35 @@
+# Eclipse
+.metadata/
+.settings/
+.project
+.classpath
+
+# Build folders
+/bin/
+/build/
+/target/
+
+# Java compiled files
+*.class
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Tomcat
+Servers/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Maven (if you use it later)
+target/
+
+# IntelliJ (if opened)
+.idea/
+*.iml
