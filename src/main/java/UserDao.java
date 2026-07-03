@@ -12,10 +12,10 @@ public class UserDao {
 	private static String PASSWORD="admin";
 	
 	 private static final String INSERT_USERS_SQL = "INSERT INTO usersdata" + "  (username, useremail, usercountry, userage) VALUES " + " (?, ?, ?, ?);";
-	 private static final String SELECT_USER_BY_ID = "select userid,username,useremail,usercountry,userage from usersdata where id =?";
+	 private static final String SELECT_USER_BY_ID = "select userid,username,useremail,usercountry,userage from usersdata where userid =?";
 	 private static final String SELECT_ALL_USERS = "select * from usersdata";
 	 private static final String DELETE_USERS_SQL = "delete from usersdata where userid = ?;";
-	 private static final String UPDATE_USERS_SQL = "update usersdata set username = ?,useremail= ?, usercountry =?, userage=? where id = ?;";
+	 private static final String UPDATE_USERS_SQL = "update usersdata set username = ?,useremail= ?, usercountry =?, userage=? where userid = ?;";
 	
 	 public static Connection getConnection() {
 
@@ -60,10 +60,10 @@ public class UserDao {
 	            ResultSet rs = preparedStatement.executeQuery();
 
 	            while (rs.next()) {
-	                String name = rs.getString("name");
-	                String email = rs.getString("email");
-	                String country = rs.getString("country");
-	                int age = rs.getInt("age");
+	                String name = rs.getString("username");
+	                String email = rs.getString("useremail");
+	                String country = rs.getString("usercountry");
+	                int age = rs.getInt("userage");
 	                user = new User(id, name, email, country, age);
 	            }
 	        } catch (Exception e) {
