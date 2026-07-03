@@ -11,23 +11,27 @@ public class UserDao {
 	private static String USERNAME="postgres";
 	private static String PASSWORD="admin";
 	
-	 private static final String INSERT_USERS_SQL = "INSERT INTO users" + "  (name, email, country, age) VALUES " + " (?, ?, ?, ?);";
-	 private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
-	 private static final String SELECT_ALL_USERS = "select * from users";
-	 private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
-	 private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =?, age=? where id = ?;";
+	 private static final String INSERT_USERS_SQL = "INSERT INTO usersdata" + "  (username, useremail, usercountry, userage) VALUES " + " (?, ?, ?, ?);";
+	 private static final String SELECT_USER_BY_ID = "select userid,username,useremail,usercountry,userage from usersdata where id =?";
+	 private static final String SELECT_ALL_USERS = "select * from usersdata";
+	 private static final String DELETE_USERS_SQL = "delete from usersdata where userid = ?;";
+	 private static final String UPDATE_USERS_SQL = "update usersdata set username = ?,useremail= ?, usercountry =?, userage=? where id = ?;";
 	
 	 public static Connection getConnection() {
-			try {
 
-				Class.forName("org.postgresql.Driver");
+		    Connection con = null;
 
-				return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		    try {
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
+		        Class.forName("org.postgresql.Driver");
+
+		        con = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+
+		    } catch(Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return con;
 		}
 	 
 	 public  int save(User e) {
@@ -35,9 +39,9 @@ public class UserDao {
 			try (Connection con = getConnection()) {
 				PreparedStatement ps = con.prepareStatement(INSERT_USERS_SQL);
 				ps.setString(1, e.getName());
-				ps.setInt(2, e.getAge());
-				ps.setString(3, e.getEmail());
-				ps.setString(4, e.getCountry());
+				ps.setString(2, e.getEmail());
+				ps.setString(3, e.getCountry());
+				ps.setInt(4, e.getAge());
 				status = ps.executeUpdate();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -77,9 +81,9 @@ public class UserDao {
 					User e = new User();
 					e.setId(rs.getInt(1));
 					e.setName(rs.getString(2));
-					e.setAge(rs.getInt(3));
-					e.setEmail(rs.getString(4));
-					e.setCountry(rs.getString(5));
+					e.setEmail(rs.getString(3));
+					e.setCountry(rs.getString(4));
+					e.setAge(rs.getInt(5));
 					list.add(e);
 				}
 			} catch (Exception e) {
@@ -88,7 +92,7 @@ public class UserDao {
 			return list;
 		}
 	 
-	 public boolean deleteUser(int id) throws Exception {
+	 public boolean deleteUser(int id) throws SQLException {
 	        boolean rowDeleted;
 	        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(DELETE_USERS_SQL);) {
 	            statement.setInt(1, id);
@@ -97,7 +101,7 @@ public class UserDao {
 	        return rowDeleted;
 	    }
 	 
-	 public boolean updateUser(User user) throws Exception {
+	 public boolean updateUser(User user) throws SQLException {
 	        boolean rowUpdated;
 	        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);) {
 	            statement.setString(1, user.getName());
@@ -110,6 +114,8 @@ public class UserDao {
 	        }
 	        return rowUpdated;
 	    }
+	 
+	 
 	 
 	 private void printSQLException(SQLException ex) {
 	        for (Throwable e: ex) {
