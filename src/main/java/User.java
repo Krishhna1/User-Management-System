@@ -1,9 +1,20 @@
+import org.hibernate.annotations.*;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name= "usersdata")
 
 public class User {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name ="username")
 	private String name;
+	@Column(name ="useremail")
 	private String email;
+	@Column(name ="userage")
 	private int age;
+	@Column(name ="usercountry")
 	private String country;
 	
 	public User() {}
